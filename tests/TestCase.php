@@ -1,26 +1,20 @@
 <?php
 
-namespace VendorName\Skeleton\Tests;
+namespace Coleshirley\FilamentPackageTestsLifecycleExample\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
+use Filament\FilamentServiceProvider;
+use Filament\Support\SupportServiceProvider;
+use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use VendorName\Skeleton\SkeletonServiceProvider;
 
 class TestCase extends Orchestra
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'VendorName\\Skeleton\\Database\\Factories\\'.class_basename($modelName).'Factory'
-        );
-    }
-
     protected function getPackageProviders($app)
     {
         return [
-            SkeletonServiceProvider::class,
+            FilamentServiceProvider::class,
+            LivewireServiceProvider::class,
+            SupportServiceProvider::class,
         ];
     }
 
@@ -28,8 +22,14 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
+        config()->set('filament.resources', [
+            'namespace' => 'Coleshirley\FilamentPackageTestsLifecycleExample\Tests\\Filament\\Resources',
+            'path' => __DIR__ . '/Filament/Resources',
+            'register' => [],
+        ]);
+
         /*
-        $migration = include __DIR__.'/../database/migrations/create_skeleton_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/create_filament-package-tests-lifecycle-example_table.php.stub';
         $migration->up();
         */
     }
